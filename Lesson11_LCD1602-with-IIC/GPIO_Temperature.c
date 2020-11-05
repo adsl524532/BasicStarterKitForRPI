@@ -1,13 +1,14 @@
 /*
  * Created by keen
- * Modified by keen 
+ * Modified by keen , CBG
  * Compiling :gcc -Wall -o GPIO_Temperature GPIO_Temperature.c -lwiringPi -lwiringPiDev
  *            gcc -Wall -o GPIO_Temperature GPIO_Temperature.c -lwiringPi -lwiringPiDev ../../Other/bme280_V2_1.o
  *
  * Run : GPIO_Temperature 
- * Date: 28/03/2017
+ * Date: 28/03/2017 - 05/11/2020
  *   CBG:
- * 	- Show temperature from /sys/bus/w1/devices/28-021480c8caff/w1_slave
+ * 	- Show temperature from /sys/bus/w1/devices/28-021480c8caff/w1_slave  short wire
+ * 	-      temperature from /sys/bus/w1/devices/28-3c01d607b280/w1_slave  long wire
  *      -      temperature from DHT11 on wiPi pin 22
  *      -      temperature from DHT22 on wiPi pin 23
  *
@@ -158,7 +159,7 @@ int main(int argc, char**argv)
 
            getTemperature(&T, &T2);   	// DS18B20 takes about 1 sec to execute
            sprintf(szT , "DS18B20: T=%.3f", T);
-           sprintf(szT2, "DS18B20: T=%.3f : %.4f", T2, T - T2);
+           sprintf(szT2, "DS18B20: T=%.3f : %.4f", T2, T - T2);   // show difference
            printf("%s\n",szT);
            printf("%s\n",szT2);
 
@@ -168,9 +169,6 @@ int main(int argc, char**argv)
 
            int Error;
            double T2, H2, T3, H3;
-
-//           int DhtPin = DHT11PIN;
-//           int DhtPin = DHT22PIN;
 
 	   printf("DHT22: \n");
 	   Error = DHT_Read(DHT22PIN, &T2, &H2, SENSOR_DHT22);		
@@ -197,7 +195,7 @@ int main(int argc, char**argv)
 
 	   //Write_Shell(cTemp, humidity, pressure);
 
-	   // Output data to screen
+	   // Output BME data to screen
 	   printf("Temperature in Celsius : %8.2f C \n", cTemp);
 	   printf("Pressure               : %8.2f hPa \n", pressure);
 	   printf("Relative Humidity      : %8.2f RH \n", humidity);
@@ -213,6 +211,7 @@ int main(int argc, char**argv)
            } else
 	      printf("Cannot open file %s\n", szFilename);
 
+           // write shell script for uploading to thingspeak
 	   char *szFilename2 = "/home/pi/Chris/Logs/Upload_Temperature.sh";
 
            FILE *fp2 = fopen(szFilename2, "w");
