@@ -19,8 +19,10 @@ int main(void){
   pinMode(led_pin,OUTPUT); 
   while(1){
     digitalWrite(led_pin,HIGH);
+    printf( "LED on...\n");
     delay (1000);
     digitalWrite(led_pin,  LOW);
+    printf( "LED off...\n");
     delay (1000);
   }
 }

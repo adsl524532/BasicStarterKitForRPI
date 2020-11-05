@@ -116,6 +116,9 @@ void read_dht11_dat()
 	lcdPrintf(lcdHandle,"Tem=%d.%d%%",dht11_dat[2], dht11_dat[3]);
 	lcdPosition (lcdHandle, 10, 1);
 	lcdPuts(lcdHandle, "Elecrow");
+    } else {
+       lcdPrintf(lcdHandle,"Error");
+       printf("Error reading DHT11\n");
     }
 }
 
